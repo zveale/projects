@@ -1,3 +1,9 @@
+/*
+Resources:
+  ThinMatrix OpenGL Skeletal Animation Tutorials https://www.youtube.com/watch?v=f3Cr8Yx3GGA&list=PLRIWtICgwaX2tKWCxdeB7Wv_rTET9JtWW
+  OGLdev Skeletal Animation With Assimp http://ogldev.atspace.co.uk/www/tutorial38/tutorial38.html
+*/
+
 #ifndef SKELETON_H
 #define SKELETON_H
 
