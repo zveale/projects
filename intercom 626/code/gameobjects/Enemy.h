@@ -15,11 +15,13 @@ class Enemy: public GameObject {
 public:
   Enemy();
   void Load();
+
   /*
   Update the path to player every 10 seconds. Move and rotate towards the player if it is close
   */
   void Update(float dt = 0.0f);
-  void Draw(ShaderProgram& shaderProgram, int index = 0);
+
+  void Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index = 0);
   void SendShaderData(ShaderProgram& shaderProgram, const int index = 0);
   void Delete();
   const unsigned NumElements();
@@ -28,14 +30,9 @@ public:
   void SelectAnimation(const int poseIndex);
   void CurrentAnimation();
 
-  bool EnemyAtTarget(const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
-  glm::vec3 MoveTowards(const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
-  glm::quat RotateTowards(const glm::quat& rotation, const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
-
   void AttachPlayer(const Player& player);
 
-  AnimatedModel* GetModel();
-  glm::mat4* GetMatrix();
+  const glm::vec3& GetPosition() const;
 
 private:
   glm::vec3 position;
@@ -56,6 +53,10 @@ private:
   const glm::vec3* playerRight;
   float refreshTime;
   int x;
+
+  bool EnemyAtTarget(const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
+  glm::vec3 MoveTowardsTarget(const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
+  glm::quat RotateTowardsTarget(const glm::quat& rotation, const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
 };
 
 #endif ENEMY_H

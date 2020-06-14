@@ -17,7 +17,7 @@ public:
   Items();
   void Load();
   void Update(float dt = 0.0f);
-  void Draw(ShaderProgram& shaderProgram, int index = 0);
+  void Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index = 0);
   void Delete();
   void SendShaderData(ShaderProgram& shaderProgram, const int index = 0);
   const unsigned NumElements();
@@ -28,9 +28,7 @@ public:
   */
   void PickupItem(int index);
 
-  StaticModel** GetModels();
-  const char** GetIds();
-  glm::mat4** GetMatrices();
+  const glm::mat4* GetCurrentMatrix(const int index) const;
 
 private:
   const static int numItems = 4;

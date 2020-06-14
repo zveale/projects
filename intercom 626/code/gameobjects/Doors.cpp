@@ -1,9 +1,5 @@
 #include <string>
 #include "Doors.h"
-#include "GameObject.h"
-#include "AnimatedModel.h"
-#include "glm/vec3.hpp"
-#include "glm/mat4x4.hpp"
 
 Doors::Doors() : GameObject() {
   for (int i = 0; i < numDoors; ++i) {
@@ -15,7 +11,6 @@ Doors::Doors() : GameObject() {
 void Doors::Load() {
   for (unsigned i = 0; i < numDoors; ++i) {
     models[i].LoadModel("../files/asset/doors/door_animated_" + std::to_string(i) + ".dae", false);
-    modelRefrences[i] = &models[i];
     doorIsOpen[i] = false;
   }
 
@@ -32,11 +27,25 @@ void Doors::SendShaderData(ShaderProgram& shaderProgram, const int index) {
     models[index].GetJointTransforms());
 }
 
-void Doors::Draw(ShaderProgram& shaderProgram, int index) {
-  models[index].Draw(shaderProgram);
+void Doors::Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index) {
+  const glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
+  const glm::mat4 modelViewMatrix = viewMatrix * (modelMatrix);
+  const glm::mat4 modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
+
+  shaderProgram.SetUniformMat4("modelMatrix", glm::mat4(1.0f));
+  shaderProgram.SetUniformMat3("normalMatrix", normalMatrix);
+  shaderProgram.SetUniformMat4("viewProjectionMatrix", projectionMatrix * (viewMatrix));
+  shaderProgram.SetUniformMat4("modelViewProjectionMatrix", modelViewProjectionMatrix);
+
+  shaderProgram.SetUniformBool("isAnimated", true);
+  shaderProgram.SetUniformMat4Array("jointTransforms", models[index].GetJointCount(), models[index].GetJointTransforms());
+  
+  models[index].Draw();
 }
 
 void Doors::Delete() {}
+
+const unsigned Doors::NumElements() { return numDoors; }
 
 bool Doors::AnimationCompleteDoorIsOpen(int doorIndex) {
   return models[doorIndex].AnimationComplete() && doorIsOpen[doorIndex];
@@ -76,12 +85,7 @@ void Doors::CloseAllDoors() {
   }
 }
 
-const unsigned Doors::NumElements() { return numDoors; }
-
 glm::vec3 Doors::GetPosition(int index) { return glm::vec3(0.0f); }
-
-AnimatedModel** Doors::GetModels() { return modelRefrences; }
-glm::vec3** Doors::GetPositions() { return positionRefrences; }
 
 void Doors::LoadPositions(std::string path) {
   Assimp::Importer importer;
@@ -97,12 +101,12 @@ void Doors::LoadPositions(std::string path) {
 
 void Doors::ProcessSceneGraph(aiNode* node, const aiScene* scene) {
   for (unsigned i = 0; i < node->mNumChildren; i++) {
-    GetPosition(node->mChildren[i], scene);
+    LoadPosition(node->mChildren[i], scene);
     ProcessSceneGraph(node->mChildren[i], scene);
   }
 }
 
-void Doors::GetPosition(const aiNode* node, const aiScene* scene) {
+void Doors::LoadPosition(const aiNode* node, const aiScene* scene) {
   std::string name = node->mName.C_Str();
 
   glm::mat4 rotationCorrection = glm::rotate(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -112,7 +116,6 @@ void Doors::GetPosition(const aiNode* node, const aiScene* scene) {
   if (std::isdigit(name.back())) {
     int index = name.back() - '0';
     positions[index] = glm::vec3(model[3]);
-    positionRefrences[index] = &positions[index];
   }
 }
 

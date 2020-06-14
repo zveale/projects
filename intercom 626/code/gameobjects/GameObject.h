@@ -5,7 +5,7 @@
 #include "glm\mat4x4.hpp"
 
 enum class ID { PLAYER_CAMERA, CINEMATIC_CAMERA, PLAYER, ENEMY, SCENE, LIGHTS, 
-  DOORS, SWITCHES, WINDOWS, SKYBOX, ITEMS, ELEVATOR, NUM_GAME_OBJECTS };
+  DOORS, SWITCHES, WINDOW, SKYBOX, ITEMS, ELEVATOR, NUM_GAME_OBJECTS };
 
 class GameObject {
 public:
@@ -28,7 +28,7 @@ public:
   **This is depreciated. The scene manager now calls the draw function for game object models directly**
   Calls the draw function for the models belonging to the gameobject. 
   */
-  virtual void Draw(ShaderProgram& shaderProgram, int index = 0) = 0;
+  virtual void Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index = 0) = 0;
 
   /*
   Remove any allocated memory for members.

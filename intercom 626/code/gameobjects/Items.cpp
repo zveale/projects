@@ -47,15 +47,26 @@ void Items::Load() {
 
 void Items::Update(float dt) {  }
 
-void Items::Draw(ShaderProgram& shaderProgram, int index) {
-  models[index].Draw(shaderProgram);
+void Items::Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index) {
+  const glm::mat4 modelViewMatrix = viewMatrix * *currentMatrix[index];
+  const glm::mat4 viewProjectionMatrix = projectionMatrix * glm::mat4(glm::mat3(viewMatrix));
+  const glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(*currentMatrix[index])));
+  const glm::mat4 modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
+  shaderProgram.SetUniformMat4("modelMatrix", *currentMatrix[index]);
+  shaderProgram.SetUniformMat3("normalMatrix", normalMatrix);
+  shaderProgram.SetUniformMat4("viewMatrix", viewMatrix);
+  shaderProgram.SetUniformMat4("projectionMatrix", projectionMatrix);
+  shaderProgram.SetUniformMat4("viewProjectionMatrix", viewProjectionMatrix);
+  shaderProgram.SetUniformMat4("modelViewProjectionMatrix", modelViewProjectionMatrix);
+
+  shaderProgram.SetUniformBool("isAnimated", false);
+  
+  models[index].Draw();
 }
 
 void Items::Delete() {}
 
-void Items::SendShaderData(ShaderProgram& shaderProgram, const int index) {
-  modelMatrix = *currentMatrix[index];
-}
+void Items::SendShaderData(ShaderProgram& shaderProgram, const int index) {}
 
 const unsigned Items::NumElements() { return numItems; }
 
@@ -89,9 +100,7 @@ void Items::PickupItem(int index) {
   }
 }
 
-StaticModel** Items::GetModels() { return staticModels; }
-const char** Items::GetIds() { return ids; }
-glm::mat4** Items::GetMatrices() { return currentMatrix; }
+const glm::mat4* Items::GetCurrentMatrix(const int index) const { return currentMatrix[index]; }
 
 void Items::LoadMatrices(std::string path) {
   Assimp::Importer importer;
@@ -138,6 +147,7 @@ glm::mat4 Items::Cast_aiMat4ToGlmMat4(const aiMatrix4x4& ai_matr) {
     ai_matr.a3, ai_matr.b3, ai_matr.c3, ai_matr.d3,
     ai_matr.a4, ai_matr.b4, ai_matr.c4, ai_matr.d4);
 }
+
 glm::vec3 Items::Cast_aiVec3DToGlmVec3(const aiVector3D& aiVec) {
   return glm::vec3(aiVec.x, aiVec.y, aiVec.z);
 }

@@ -12,11 +12,13 @@ class Player : public GameObject {
 public:
   Player();
   void Load();
+
   /*
   Update light attached to player.
   */
   void Update(float dt = 0.0f);
-  void Draw(ShaderProgram& shaderProgram, int index = 0);
+
+  void Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index = 0);
   void Delete();
   const unsigned NumElements();
 
@@ -40,7 +42,6 @@ public:
   void MoveLeft(const float dt);
   void MoveRight(const float dt);
 
-public:
   glm::vec3 position;
   glm::vec3 front;
   glm::vec3 right;

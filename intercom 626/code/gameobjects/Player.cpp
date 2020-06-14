@@ -9,7 +9,7 @@
 Player::Player() : GameObject() {}
 
 void Player::Load() {
-  position = glm::vec3(0.0f, -38.0f, 0.0f);
+  position = glm::vec3(0.0f, 0.0f, 0.0f);
   front = glm::vec3(0.0f, 0.0f, -1.0f);
   right = glm::vec3(0.0f, 0.0f, 0.0f);
   speed = 0.0f;
@@ -17,18 +17,15 @@ void Player::Load() {
 }
 
 void Player::Update(float dt) {
-  glm::vec3 offset = glm::vec3(0.2f, 0.0f, -0.1f);
-  light->position = position + offset;
-  glm::vec3 forward = position + front;
+  glm::vec3 offset = glm::vec3(0.0f, 0.0f, -0.2f);
+  light->position = position + glm::normalize(front) * -1.0f;
   light->direction = front;
+
   light->cutoff = glm::cos(glm::radians(8.0f));
   light->outerCutoff = glm::cos(glm::radians(60.5f));
-
-  // fixme temp
-  light->position = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-void Player::Draw(ShaderProgram& shaderProgram, int index) {}
+void Player::Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index) {}
 
 void Player::Delete() {}
 
@@ -38,10 +35,7 @@ void Player::AttachCamera(FirstPersonCamera& camera) {
   camera.SetTarget(&position, &front, &right);
 }
 
-void Player::SendDataShader(ShaderProgram& shaderProgram) {
-  shaderProgram.SetUniformVec3("viewPosition", position);
-  shaderProgram.SetUniformVec4("lightPosition", glm::vec4(light->position, 1.0f));
-}
+void Player::SendDataShader(ShaderProgram& shaderProgram) {}
 
 void Player::SendShaderData(ShaderProgram& shaderProgram, const int index) {}
 
@@ -51,9 +45,9 @@ void Player::Crouch() { yPosition = 0.9f; }
 
 void Player::Stand() { yPosition = 1.0f; }
 
-void Player::Walk() { speed = 2.0f; }
+void Player::Walk() { speed = 1.0f; }
 
-void Player::Sprint() { speed = 10.0f; }
+void Player::Sprint() { speed = 4.0f; }
 
 void Player::Elevate(const float dt) { position.y += (1.0f * dt); }
 

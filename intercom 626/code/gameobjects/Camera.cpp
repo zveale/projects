@@ -16,7 +16,7 @@
     viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), target, up);
   }
 
-  void Camera::Draw(ShaderProgram& shaderProgram, int index) {}
+  void Camera::Draw(ShaderProgram& shaderProgram, const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix, const int index) {}
 
   void Camera::Delete() {}
 
