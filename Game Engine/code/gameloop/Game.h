@@ -5,6 +5,7 @@
 #include "InputSystem.h"
 #include "LogicSystem.h"
 #include "PhysicsSystem.h"
+#include "ScriptSystem.h"
 #include "FirstPersonCamera.h"
 #include "CinematicCamera.h"
 #include "GameObject.h"
@@ -41,11 +42,12 @@ private:
   InputSystem inputSystem;
   LogicSystem logicSystem;
   PhysicsSystem physicsSystem;
+  ScriptSystem scriptSystem;
 
   FirstPersonCamera playerCamera;
   CinematicCamera cinematicCamera;
 
-  GameObject* gameObjects[ID::NUM_GAME_OBJECTS];
+  GameObject* gameObjects[static_cast<int>(ID::NUM_GAME_OBJECTS)];
   Player player;
   Enemy enemy;
   Scene scene;

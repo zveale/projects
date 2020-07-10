@@ -5,6 +5,7 @@ void Game::StartUp() {
   inputSystem.StartUp();
   logicSystem.StartUp();
   physicsSystem.StartUp();
+  scriptSystem.StartUp();
 
   playerCamera.Load();
   cinematicCamera.Load();
@@ -19,18 +20,18 @@ void Game::StartUp() {
   items.Load();
   elevator.Load();
 
-  gameObjects[ID::PLAYER_CAMERA] = &playerCamera;
-  gameObjects[ID::CINEMATIC_CAMERA] = &cinematicCamera;
-  gameObjects[ID::PLAYER] = &player;
-  gameObjects[ID::ENEMY] = &enemy;
-  gameObjects[ID::SCENE] = &scene;
-  gameObjects[ID::LIGHTS] = &lights;
-  gameObjects[ID::SWITCHES] = &switches;
-  gameObjects[ID::DOORS] = &doors;
-  gameObjects[ID::WINDOWS] = &windows;
-  gameObjects[ID::SKYBOX] = &skybox;
-  gameObjects[ID::ITEMS] = &items;
-  gameObjects[ID::ELEVATOR] = &elevator;
+  gameObjects[static_cast<int>(ID::PLAYER_CAMERA)] = &playerCamera;
+  gameObjects[static_cast<int>(ID::CINEMATIC_CAMERA)] = &cinematicCamera;
+  gameObjects[static_cast<int>(ID::PLAYER)] = &player;
+  gameObjects[static_cast<int>(ID::ENEMY)] = &enemy;
+  gameObjects[static_cast<int>(ID::SCENE)] = &scene;
+  gameObjects[static_cast<int>(ID::LIGHTS)] = &lights;
+  gameObjects[static_cast<int>(ID::SWITCHES)] = &switches;
+  gameObjects[static_cast<int>(ID::DOORS)] = &doors;
+  gameObjects[static_cast<int>(ID::WINDOW)] = &windows;
+  gameObjects[static_cast<int>(ID::SKYBOX)] = &skybox;
+  gameObjects[static_cast<int>(ID::ITEMS)] = &items;
+  gameObjects[static_cast<int>(ID::ELEVATOR)] = &elevator;
 
   renderSystem.AttachGameObjects(gameObjects);
   logicSystem.AttachGameObjects(gameObjects);
@@ -38,6 +39,7 @@ void Game::StartUp() {
   logicSystem.AttachCollisionData(&physicsSystem);
   physicsSystem.AttachPlayer(&player);
   physicsSystem.AttachDoors(&doors);
+  scriptSystem.AttachGameObjects(gameObjects);
 
   playerCamera.AttachInput(&inputSystem);
   cinematicCamera.SetTargetPosition(&player.position); //TODO
@@ -62,6 +64,7 @@ void Game::Run() {
     GLOBAL::GAME_TIME += dt;
 
     inputSystem.Process();
+    scriptSystem.Update(dt);
     logicSystem.Update(dt);
     // physicsSystem.Update();
     logicSystem.PostUpdate();
@@ -83,6 +86,7 @@ void Game::ShutDown() {
   cinematicCamera.Delete();
   playerCamera.Delete();
 
+  scriptSystem.ShutDown();
   physicsSystem.ShutDown();
   logicSystem.ShutDown();
   inputSystem.ShutDown();

@@ -30,21 +30,34 @@ public:
   void SelectAnimation(const int poseIndex);
   void CurrentAnimation();
 
+  /*
+  These commands are called from EnemyScript.py
+  */
+  float currentDuration;
+  int commandIndex;
+  void StandToCrawl(float dt);
+  void CrawlToStand(float dt);
+  void MoveForward(float dt);
+  void TurnRight180(float dt);
+  void PathfindToPlayer(float dt);
+
   void AttachPlayer(const Player& player);
 
   const glm::vec3& GetPosition() const;
 
 private:
   glm::vec3 position;
+  glm::vec3 front;
   glm::vec3 targetPosition;
   glm::quat rotation;
   glm::vec3 player;
   float speed;
   float rotationSpeed;
+  bool isCrouched;
+  bool canRotate;
 
   Pathfinding pathfinding;
   AnimatedModel model;
-
   float time;
   int seconds;
 
@@ -52,7 +65,6 @@ private:
   const glm::vec3* playerFront;
   const glm::vec3* playerRight;
   float refreshTime;
-  int x;
 
   bool EnemyAtTarget(const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
   glm::vec3 MoveTowardsTarget(const glm::vec3& position, const glm::vec3& target, const float speed, const float dt);
