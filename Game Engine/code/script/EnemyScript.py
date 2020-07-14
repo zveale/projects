@@ -9,42 +9,42 @@ class Command :
         CommandFunction = getattr(enemy, self.name)
         CommandFunction(dt)
     
-class StandToCrawl(Command) :
-    name = "StandToCrawl"
+class stand_to_crawl(Command) :
+    name = "stand_to_crawl"
 
-class CrawlToStand(Command) :
-    name = "CrawlToStand"
+class crawl_to_stand(Command) :
+    name = "crawl_to_stand"
 
-class MoveForward(Command) :
-    name = "MoveForward"
+class move_forward(Command) :
+    name = "move_forward"
 
-class TurnRight180(Command) :
-    name = "TurnRight180"
+class turn_right_180(Command) :
+    name = "turn_right_180"
 
-class PathfindToPlayer(Command) :
-    name = "PathfindToPlayer"
+class pathfind_to_player(Command) :
+    name = "pathfind_to_player"
 
 # name of command : function to call
 availableCommands = {
-   "StandToCrawl" : StandToCrawl(),
-   "CrawlToStand" : CrawlToStand(),
-   "MoveForward" : MoveForward(),
-   "TurnRight180" : TurnRight180(),
-   "PathfindToPlayer" : PathfindToPlayer()
+   "stand_to_crawl" : StandToCrawl(),
+   "crawl_to_stand" : CrawlToStand(),
+   "move_forward" : MoveForward(),
+   "turn_right_180" : TurnRight180(),
+   "pathfind_to_player" : PathfindToPlayer()
     }
 
 # name of command : duration in seconds
 script = [
-    ("StandToCrawl", 1.25),
-    ("MoveForward", 2.0),
-    ("CrawlToStand", 1.25),
-    ("MoveForward", 2.0),
-    ("TurnRight180", 4.0),
+    ("stand_to_crawl", 1.25),
+    ("move_forward", 2.0),
+    ("crawl_to_stand", 1.25),
+    ("move_forward", 2.0),
+    ("turn_right_180", 4.0),
     ]
 
 #script = [
-#    ("MoveForward", 4.0),
-#    ("TurnRight180", 4.0),
+#    ("move_forward", 4.0),
+#    ("turn_right_180", 4.0),
 #    ]
 
 # Execute current command

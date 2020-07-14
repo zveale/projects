@@ -8,11 +8,11 @@ namespace py = pybind11;
 
 PYBIND11_EMBEDDED_MODULE(Commands, m) {
   py::class_<Enemy, std::unique_ptr<Enemy, py::nodelete>>(m, "Enemy")
-    .def("StandToCrawl", &Enemy::StandToCrawl)
-    .def("CrawlToStand", &Enemy::CrawlToStand)
-    .def("MoveForward", &Enemy::MoveForward)
-    .def("TurnRight180", &Enemy::TurnRight180)
-    .def("PathfindToPlayer", &Enemy::PathfindToPlayer)
+    .def("stand_to_crawl", &Enemy::StandToCrawl)
+    .def("crawl_to_stand", &Enemy::CrawlToStand)
+    .def("move_forward", &Enemy::MoveForward)
+    .def("turn_right_180", &Enemy::TurnRight180)
+    .def("pathfind_to_player", &Enemy::PathfindToPlayer)
     .def_readwrite("currentDuration", &Enemy::currentDuration)
     .def_readwrite("commandIndex", &Enemy::commandIndex);
 }
