@@ -4,24 +4,24 @@
 from Commands import Enemy
 
 # Commands match enemy commands embedded in EmbeddedModules.h
-class Command :
+class Command:
     def execute(self, enemy, dt):
         CommandFunction = getattr(enemy, self.name)
         CommandFunction(dt)
     
-class stand_to_crawl(Command) :
+class stand_to_crawl(Command):
     name = "stand_to_crawl"
 
-class crawl_to_stand(Command) :
+class crawl_to_stand(Command):
     name = "crawl_to_stand"
 
-class move_forward(Command) :
+class move_forward(Command):
     name = "move_forward"
 
-class turn_right_180(Command) :
+class turn_right_180(Command):
     name = "turn_right_180"
 
-class pathfind_to_player(Command) :
+class pathfind_to_player(Command):
     name = "pathfind_to_player"
 
 # name of command : function to call
@@ -48,7 +48,7 @@ script = [
 #    ]
 
 # Execute current command
-def UpdateCommand(enemy, dt) :
+def update_command(enemy, dt) :
     currentDuration = getattr(enemy, "currentDuration")
     currentDuration += dt;
 
@@ -59,7 +59,7 @@ def UpdateCommand(enemy, dt) :
         commandIndex = (commandIndex + 1) % len(script)
         (name, maxDuration) = script[commandIndex]
         currentDuration = 0.0
-
+    
     setattr(enemy, "currentDuration", currentDuration)
     setattr(enemy, "commandIndex", commandIndex)
 
