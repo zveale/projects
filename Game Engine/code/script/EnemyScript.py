@@ -50,7 +50,7 @@ script = [
 # Execute current command
 def update_command(enemy, dt) :
     currentDuration = getattr(enemy, "currentDuration")
-    currentDuration += dt;
+    currentDuration += dt
 
     commandIndex = getattr(enemy, "commandIndex")
     (name, maxDuration) = script[commandIndex]
