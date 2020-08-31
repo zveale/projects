@@ -24,3 +24,5 @@ Right now the audio just has support for 2D SFX and BGM but i plan to implement
 full of features I am interested in and want to learn more about. When I find
 something I am interested in I find that the best way to help me understand it 
 is to implement it.
+
+**This is a supplement for my site zveale.github.io. Additional information is posted in the description section of each video.**
