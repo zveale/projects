@@ -12,4 +12,4 @@ made the laser which was probably the most entertaining thing to make. This
 project was a lot of fun and my brother and I hope to work on another project 
 again in the future.
 
-**This is a supplement for my site zveale.github.io. Additional information is posted in the description section of the each video.**
+**This is a supplement for my site zveale.github.io. Additional information is posted in the description section of each video.**
