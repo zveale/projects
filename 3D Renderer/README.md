@@ -19,7 +19,7 @@ can be loaded in from blender, the enemy was created and rigged by an artist
 and loaded directly in with little modification. The view point is primarily
 a first-person camera but there is also support for a more cinematic spline 
 camera that follows a list of points. There is some support for python scripting. 
-Right now the audio just has support for 2D SFX and BGM but i plan to implement 
+Right now the audio just has support for 2D SFX and BGM but SoLoud has support for
 3D audio. This project has morphed over time and is turning into more of a platform
 full of features I am interested in and want to learn more about. When I find
 something I am interested in I find that the best way to help me understand it 
